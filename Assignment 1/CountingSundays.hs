@@ -24,3 +24,16 @@ dayOfWeek y m d = mod (d + t + k + div k 4 + div j 4 - 2 * j) 7
     j = div y' 100
     t = div (13 * (m' + 1)) 5
 
+
+sundays1 :: Integer -> Integer -> Integer
+sundays1 start end = sundays' start 1
+  where
+    sundays' :: Integer -> Integer -> Integer
+    sundays' y m
+      | y > end   = 0
+      | otherwise = if dayOfWeek y m 1 == 1 then rest + 1 else rest
+      where
+        nextY = if m < 12 then y else y + 1
+        nextM = if m < 12 then m + 1 else 1
+        rest = sundays' nextY nextM
+
