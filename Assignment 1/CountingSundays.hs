@@ -49,3 +49,30 @@ sundays1' start end = sundays' 0 start 1
       where
         nextY = if m < 12 then y else y + 1
         nextM = if m < 12 then m + 1 else 1
+
+
+leap :: Integer -> Bool
+leap y = (mod y 4 == 0) && (mod y 100 /= 0) || (mod y 400 == 0)
+
+
+daysInMonth :: Integer -> Integer -> Integer
+daysInMonth m y
+  | m == 2            = if leap y then 29 else 28
+  | m == 4 || m == 6  = 30
+  | m == 9 || m == 11 = 30
+  | otherwise         = 31
+
+
+sundays2 :: Integer -> Integer -> Integer
+sundays2 start end = sundays2' 0 2 start 1
+  where
+    sundays2' :: Integer -> Integer -> Integer -> Integer -> Integer
+    sundays2' acc acc2 y m
+      | y > end            = acc
+      | mod weekday 7 == 0 = sundays2' (acc + 1) weekday nextY nextM
+      | otherwise          = sundays2' acc weekday nextY nextM
+        where
+          nextY   = if m < 12 then y else y + 1
+          nextM   = if m < 12 then m + 1 else 1
+          days    = daysInMonth m y
+          weekday = acc2 + mod days 7
