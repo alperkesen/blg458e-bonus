@@ -37,3 +37,15 @@ sundays1 start end = sundays' start 1
         nextM = if m < 12 then m + 1 else 1
         rest = sundays' nextY nextM
 
+
+sundays1' :: Integer -> Integer -> Integer
+sundays1' start end = sundays' 0 start 1
+  where
+    sundays' :: Integer -> Integer -> Integer -> Integer
+    sundays' acc y m
+      | y > end              = acc
+      | dayOfWeek y m 1 == 1 = sundays' (acc+1) nextY nextM
+      | otherwise            = sundays' acc nextY nextM
+      where
+        nextY = if m < 12 then y else y + 1
+        nextM = if m < 12 then m + 1 else 1
