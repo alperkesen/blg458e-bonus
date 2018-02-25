@@ -76,3 +76,29 @@ sundays2 start end = sundays2' 0 2 start 1
           nextM   = if m < 12 then m + 1 else 1
           days    = daysInMonth m y
           weekday = acc2 + mod days 7
+
+
+numDays :: Integer -> Integer -> Integer
+numDays start end = numDays' 0 start 1 1
+  where
+    numDays' :: Integer -> Integer -> Integer -> Integer -> Integer
+    numDays' acc y m d
+      | y > end   = acc
+      | otherwise = numDays' (acc+1) nextY nextM nextD
+        where
+          nextY = if m < 12 || d < daysInMonth m y then y else y+1
+          nextM
+            | d < daysInMonth m y = m
+            | m < 12              = m + 1
+            | otherwise           = 1
+          nextD = if d < daysInMonth m y then d + 1 else 1
+
+
+certainDay :: Integer -> Integer -> Integer -> Integer -> Integer -> Integer
+certainDay start end m d nth = certainDay' 0 start
+  where
+    certainDay' :: Integer -> Integer -> Integer
+    certainDay' acc y
+      | y > end                = acc
+      | dayOfWeek y m d == nth = certainDay' (acc+1) (y+1)
+      | otherwise              = certainDay' acc (y+1)
