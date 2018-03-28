@@ -34,3 +34,10 @@ removeCard [] c = error "Couldn't find the card"
 removeCard cs@(x:xs) c
   | x == c     = xs
   | otherwise  = x : removeCard xs c
+
+allSameColor :: [Card] -> Bool
+allSameColor []  = True
+allSameColor [_] = True
+allSameColor (x:y:xs)
+  | cardColor x == cardColor y = allSameColor (y:xs)
+  | otherwise                  = False
