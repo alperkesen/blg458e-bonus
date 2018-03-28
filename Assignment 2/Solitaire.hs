@@ -18,8 +18,13 @@ data Move = Draw | Discard Card deriving (Eq, Show)
 
 cardColor :: Card -> Color
 cardColor card = case suit card of
-  Spades -> Black
-  Clubs -> Black
+  Spades   -> Black
+  Clubs    -> Black
   Diamonds -> Red
-  Hearts -> Red
+  Hearts   -> Red
 
+cardValue :: Card -> Int
+cardValue card = case rank card of
+  Ace   -> 11
+  Num x ->  x
+  _     -> 10
