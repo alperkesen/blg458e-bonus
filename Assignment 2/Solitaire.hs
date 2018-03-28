@@ -28,3 +28,9 @@ cardValue card = case rank card of
   Ace   -> 11
   Num x ->  x
   _     -> 10
+
+removeCard :: [Card] -> Card -> [Card]
+removeCard [] c = error "Couldn't find the card"
+removeCard cs@(x:xs) c
+  | x == c     = xs
+  | otherwise  = x : removeCard xs c
