@@ -7,9 +7,19 @@
 --
 --
 
+module Solitaire where
 
-data Color = Red | Black
-data Suit = Clubs | Diamonds | Hearts | Spades
-data Rank = Num Int | Jack Queen | King | Ace
-data Card = Card { suit :: Suit, rank :: Rank }
-data Move = Draw | Discard Card
+data Color = Red | Black deriving (Eq, Show)
+data Suit = Clubs | Diamonds | Hearts | Spades deriving (Eq, Show)
+data Rank = Num Int | Jack | Queen | King | Ace deriving (Eq, Show)
+data Card = Card { suit :: Suit, rank :: Rank } deriving (Eq, Show)
+data Move = Draw | Discard Card deriving (Eq, Show)
+
+
+cardColor :: Card -> Color
+cardColor card = case suit card of
+  Spades -> Black
+  Clubs -> Black
+  Diamonds -> Red
+  Hearts -> Red
+
