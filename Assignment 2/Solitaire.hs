@@ -41,3 +41,12 @@ allSameColor [_] = True
 allSameColor (x:y:xs)
   | cardColor x == cardColor y = allSameColor (y:xs)
   | otherwise                  = False
+
+sumCards :: [Card] -> Int
+sumCards cs = sumCards' 0 cs
+  where
+    sumCards' ::  Int -> [Card] -> Int
+    sumCards' acc [] = acc
+    sumCards' acc (x:xs) = sumCards' newAcc xs
+      where
+        newAcc = acc + cardValue x
