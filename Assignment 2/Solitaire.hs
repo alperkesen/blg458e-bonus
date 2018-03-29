@@ -50,3 +50,10 @@ sumCards cs = sumCards' 0 cs
     sumCards' acc (x:xs) = sumCards' newAcc xs
       where
         newAcc = acc + cardValue x
+
+score :: [Card] -> Int -> Int
+score cs g
+  | s > g     = if allSameColor cs then div (3 * (s - g)) 2 else 3 * (s - g)
+  | otherwise = if allSameColor cs then div (g - s) 2 else g - s
+    where
+      s = sumCards cs
