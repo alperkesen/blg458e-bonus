@@ -74,3 +74,11 @@ runGame cs ms g = playGame Start cs ms []
       where
         dc = card m
         hs' = c : hs
+
+convertSuit :: Char -> Suit
+convertSuit c
+  | c == 'd' || c == 'D' = Diamonds
+  | c == 'h' || c == 'H' = Hearts
+  | c == 'c' || c == 'C' = Clubs
+  | c == 's' || c == 'S' = Spades
+  | otherwise            = error "Unknown suit"
