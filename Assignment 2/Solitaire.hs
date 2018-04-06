@@ -94,3 +94,9 @@ convertRank c
   | c == '1'             = Ace
   | isDigit c            = Num (digitToInt c)
   | otherwise            = error "Unknown rank"
+
+convertCard :: Char -> Char -> Card
+convertCard s r = Card suit rank
+  where
+    suit = convertSuit s
+    rank = convertRank r
