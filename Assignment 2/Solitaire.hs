@@ -14,6 +14,7 @@ data Suit = Clubs | Diamonds | Hearts | Spades deriving (Eq, Show)
 data Rank = Num Int | Jack | Queen | King | Ace deriving (Eq, Show)
 data Card = Card { suit :: Suit, rank :: Rank } deriving (Eq, Show)
 data Move = Draw | Discard Card deriving (Eq, Show)
+data State = Start | Continue | End deriving (Eq, Show)
 
 
 cardColor :: Card -> Color
