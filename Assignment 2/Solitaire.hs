@@ -8,6 +8,7 @@
 --
 
 module Solitaire where
+import Data.Char
 
 data Color = Red | Black deriving (Eq, Show)
 data Suit = Clubs | Diamonds | Hearts | Spades deriving (Eq, Show)
@@ -82,3 +83,14 @@ convertSuit c
   | c == 'c' || c == 'C' = Clubs
   | c == 's' || c == 'S' = Spades
   | otherwise            = error "Unknown suit"
+
+
+convertRank :: Char -> Rank
+convertRank c
+  | c == 't' || c == 'T' = Num 10
+  | c == 'j' || c == 'J' = Jack
+  | c == 'q' || c == 'Q' = Queen
+  | c == 'k' || c == 'K' = King
+  | c == '1'             = Ace
+  | isDigit c            = Num (digitToInt c)
+  | otherwise            = error "Unknown rank"
