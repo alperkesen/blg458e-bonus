@@ -100,3 +100,17 @@ convertCard s r = Card suit rank
   where
     suit = convertSuit s
     rank = convertRank r
+
+readCards :: IO [Card]
+readCards = readCards' []
+  where
+    readCards' :: [Card] -> IO [Card]
+    readCards' cs = do
+      line <- getLine
+      if line == "."
+        then return cs
+        else do let s = line !! 0
+                let r = line !! 1
+                let c = convertCard s r
+
+                readCards' (c:cs)
