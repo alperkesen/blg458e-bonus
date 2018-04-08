@@ -121,3 +121,19 @@ convertMove 'D' _ _ = Draw
 convertMove c s r
   | c == 'r' || c == 'R' = Discard (convertCard s r)
   | otherwise            = error "Unknown Move"
+
+readMoves :: IO [Move]
+readMoves = readMoves' []
+  where
+    readMoves' :: [Move] -> IO [Move]
+    readMoves' ms = do
+      line <- getLine
+      if line == "."
+        then return ms
+        else do let t = line !! 0
+                let s = line !! 1
+                let r = line !! 2
+
+                let m = convertMove t s r
+
+                readMoves' (m:ms)
