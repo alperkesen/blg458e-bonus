@@ -114,3 +114,10 @@ readCards = readCards' []
                 let c = convertCard s r
 
                 readCards' (c:cs)
+
+convertMove :: Char -> Char -> Char -> Move
+convertMove 'd' _ _ = Draw
+convertMove 'D' _ _ = Draw
+convertMove c s r
+  | c == 'r' || c == 'R' = Discard (convertCard s r)
+  | otherwise            = error "Unknown Move"
