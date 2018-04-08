@@ -7,7 +7,6 @@
 --
 --
 
-module Solitaire where
 import Data.Char
 
 data Color = Red | Black deriving (Eq, Show)
@@ -137,3 +136,19 @@ readMoves = readMoves' []
                 let m = convertMove t s r
 
                 readMoves' (m:ms)
+
+main :: IO ()
+main = do putStrLn "Enter cards:"
+          cards <- readCards
+          --putStrLn (show cards)
+
+          putStrLn "Enter moves:"
+          moves <- readMoves
+          --putStrLn (show moves)
+
+          putStrLn "Enter goal:"
+          line <- getLine
+
+          let goal = read line :: Int
+          let score = runGame cards moves goal
+          putStrLn ("Score: " ++ show score)
