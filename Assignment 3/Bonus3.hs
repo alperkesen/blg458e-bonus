@@ -37,6 +37,7 @@ type CharCountWordMap = Map.Map CharCountMap [Word]
       -> fromList [('a',1),('e',1),('t',1)]
 
 -}
+
 wordCharCounts :: Word -> CharCountMap
 wordCharCounts ws = Map.fromList [(head x, length x) |
                                   x <- groupBy (\x y -> x == y)
@@ -53,6 +54,7 @@ wordCharCounts ws = Map.fromList [(head x, length x) |
       -> fromList [('n',1),('o',2),('u',1),('w',1),('y',1)]
 
 -}
+
 sentenceCharCounts :: Sentence -> CharCountMap
 sentenceCharCounts ws = Map.unionsWith (+) $ map wordCharCounts ws
 
@@ -68,6 +70,7 @@ sentenceCharCounts ws = Map.unionsWith (+) $ map wordCharCounts ws
                    ("eat",fromList [('a',1),('e',1),('t',1)])]
 
 -}
+
 dictCharCounts :: [Word] -> WordCharCountMap
 dictCharCounts ws = Map.fromList [(w, ccmap) | w <- ws,
                                   let ccmap = wordCharCounts w]
@@ -89,3 +92,23 @@ dictCharCounts ws = Map.fromList [(w, ccmap) | w <- ws,
 dictWordsByCharCounts :: WordCharCountMap -> CharCountWordMap
 dictWordsByCharCounts wccmap = Map.fromListWith (++) [(snd w, [fst w]) |
                                                       w <- Map.toList wccmap]
+
+
+{- 
+    Takes a word, a map from character counts to list of words.
+    Returns list of words.
+
+    Example:
+
+      wordAnagrams "tea" [(fromList [('a',1),('e',1),('t',1)],["eat","ate"])]
+
+      -> ["eat","ate"]
+
+-}
+
+wordAnagrams :: Word -> CharCountWordMap -> [Word]
+wordAnagrams w ccwmap = case Map.lookup cc ccwmap of
+  Nothing -> []
+  Just a  -> a
+  where
+    cc = wordCharCounts w
