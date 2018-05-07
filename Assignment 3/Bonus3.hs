@@ -142,3 +142,22 @@ charCountsSubsets ccm = (nub . map wordCharCounts) $ charCountsSubsets' word
     charCountsSubsets' cs@(c':cs') = map (c':) subsets ++ subsets
       where
         subsets = charCountsSubsets' cs'
+
+
+{-
+    Takes two character counts as a map.
+    Returns a map of character counts.
+
+    Example:
+
+      subtractCounts (fromList [('a',1),('e',1),('t',1)])
+                     (fromList [('a',1),('t',1)])
+
+      -> fromList [('e',1)]
+
+-}
+
+subtractCounts :: CharCountMap -> CharCountMap -> CharCountMap
+subtractCounts c1 c2 = Map.filter (\x -> x > 0) $ Map.unionsWith (-) lst
+  where
+    lst = [c1, c2]
