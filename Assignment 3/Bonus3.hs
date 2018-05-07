@@ -217,3 +217,13 @@ sentenceAnagrams sentence words = findAnagrams [] ccs
             ccsst' = charCountsSubsets sCnt'
             fAnagrams' = findAnagrams' lst' sCnt' ccsst'
             newL = [[x] ++ y | x <- mWords', y <- fAnagrams']
+
+
+main = do
+  wordsFile <- readFile "words.txt"
+  args <- getArgs
+
+  let words = splitOn "\n" wordsFile
+  let anagrams = concat $ sentenceAnagrams args words
+
+  print anagrams
