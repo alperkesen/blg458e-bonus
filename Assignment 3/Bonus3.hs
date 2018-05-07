@@ -161,3 +161,59 @@ subtractCounts :: CharCountMap -> CharCountMap -> CharCountMap
 subtractCounts c1 c2 = Map.filter (\x -> x > 0) $ Map.unionsWith (-) lst
   where
     lst = [c1, c2]
+
+
+{-
+
+    Takes a sentence, list of words.
+    Returns list of sentences (anagrams)
+
+    Example:
+
+      sentenceAnagrams ["i", "love", "you"] ["you", "olive", "i", "love"]
+
+      -> [["you","olive"],["you","love","i"],["you","i","love"],
+          ["i","love","you"],["i","you","love"],["love","i","you"],
+          ["love","you","i"],["olive","you"]]
+
+-}
+sentenceAnagrams :: Sentence -> [Word] -> [Sentence]
+sentenceAnagrams sentence words = findAnagrams [] ccs
+  where
+    wMap = (dictWordsByCharCounts . dictCharCounts) words
+    maxLength = (length . concat) sentence
+
+    scc = sentenceCharCounts sentence
+    ccs = charCountsSubsets scc
+
+    findAnagrams :: [Sentence] -> [CharCountMap] -> [Sentence]
+    findAnagrams lst [] = lst
+    findAnagrams lst ccs@(c:cs)
+      | null mWords = findAnagrams lst cs
+      | otherwise   = findAnagrams (newS' ++ lst) cs
+      where
+        word = concat [replicate (snd x) (fst x) | x <- Map.toList c]
+        mWords = wordAnagrams word wMap
+
+        sCnt = subtractCounts scc c
+        ccsst = charCountsSubsets sCnt
+        fAnagrams = findAnagrams' [] sCnt ccsst
+
+        newS = [[x] ++ y | x <- mWords, y <- fAnagrams]
+        newS' = nub $ filter (\x -> (length . concat) x == maxLength) newS
+
+        findAnagrams' :: [Sentence] -> CharCountMap -> [CharCountMap] -> [Sentence]
+        findAnagrams' lst' scc' _
+          | length scc' == 0  = lst' ++ [[]]
+        findAnagrams' lst' _ [] = lst' ++ [[]]
+        findAnagrams' lst' scc' ccs'@(cs':css')
+          | null mWords' = findAnagrams' lst' scc' css'
+          | otherwise    = findAnagrams' (lst' ++ newL) scc' css'
+          where
+            word' = concat [replicate (snd x) (fst x) | x <- Map.toList cs']
+            mWords' = wordAnagrams word' wMap
+
+            sCnt' = subtractCounts scc' cs'
+            ccsst' = charCountsSubsets sCnt'
+            fAnagrams' = findAnagrams' lst' sCnt' ccsst'
+            newL = [[x] ++ y | x <- mWords', y <- fAnagrams']
