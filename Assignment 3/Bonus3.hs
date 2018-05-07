@@ -25,3 +25,19 @@ type CharCounts = [(Char, Int)]
 type CharCountMap = Map.Map Char Int
 type WordCharCountMap = Map.Map Word CharCountMap
 type CharCountWordMap = Map.Map CharCountMap [Word]
+
+
+{-
+    Takes a word and returns character counts as a map.
+
+    Example:
+
+      wordCharCounts "eat"
+
+      -> fromList [('a',1),('e',1),('t',1)]
+
+-}
+wordCharCounts :: Word -> CharCountMap
+wordCharCounts ws = Map.fromList [(head x, length x) |
+                                  x <- groupBy (\x y -> x == y)
+                                   $ (sort . (map toLower)) ws]
