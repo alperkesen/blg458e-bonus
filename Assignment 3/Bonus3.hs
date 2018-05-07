@@ -41,3 +41,17 @@ wordCharCounts :: Word -> CharCountMap
 wordCharCounts ws = Map.fromList [(head x, length x) |
                                   x <- groupBy (\x y -> x == y)
                                    $ (sort . (map toLower)) ws]
+
+
+{-
+    Takes a sentence (list of words) and returns character counts as a map.
+
+    Example:
+
+      sentenceCharCounts ["you", "now"]
+
+      -> fromList [('n',1),('o',2),('u',1),('w',1),('y',1)]
+
+-}
+sentenceCharCounts :: Sentence -> CharCountMap
+sentenceCharCounts ws = Map.unionsWith (+) $ map wordCharCounts ws
