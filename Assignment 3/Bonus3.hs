@@ -55,3 +55,19 @@ wordCharCounts ws = Map.fromList [(head x, length x) |
 -}
 sentenceCharCounts :: Sentence -> CharCountMap
 sentenceCharCounts ws = Map.unionsWith (+) $ map wordCharCounts ws
+
+
+{-
+    Takes a list of words and returns a map from word to character counts.
+
+    Example:
+
+      dictCharCounts ["ate", "eat"]
+
+      -> fromList [("ate",fromList [('a',1),('e',1),('t',1)]),
+                   ("eat",fromList [('a',1),('e',1),('t',1)])]
+
+-}
+dictCharCounts :: [Word] -> WordCharCountMap
+dictCharCounts ws = Map.fromList [(w, ccmap) | w <- ws,
+                                  let ccmap = wordCharCounts w]
