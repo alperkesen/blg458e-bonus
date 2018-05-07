@@ -180,7 +180,8 @@ subtractCounts c1 c2 = Map.filter (\x -> x > 0) $ Map.unionsWith (-) lst
 sentenceAnagrams :: Sentence -> [Word] -> [Sentence]
 sentenceAnagrams sentence words = findAnagrams [] ccs
   where
-    wMap = (dictWordsByCharCounts . dictCharCounts) words
+    wMap = (dictWordsByCharCounts . dictCharCounts) $
+      (filter (\x -> length x > 0) words)
     maxLength = (length . concat) sentence
 
     scc = sentenceCharCounts sentence
@@ -202,7 +203,8 @@ sentenceAnagrams sentence words = findAnagrams [] ccs
         newS = [[x] ++ y | x <- mWords, y <- fAnagrams]
         newS' = nub $ filter (\x -> (length . concat) x == maxLength) newS
 
-        findAnagrams' :: [Sentence] -> CharCountMap -> [CharCountMap] -> [Sentence]
+        findAnagrams' :: [Sentence] -> CharCountMap -> [CharCountMap]
+          -> [Sentence]
         findAnagrams' lst' scc' _
           | length scc' == 0  = lst' ++ [[]]
         findAnagrams' lst' _ [] = lst' ++ [[]]
