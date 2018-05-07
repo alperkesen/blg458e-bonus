@@ -224,6 +224,6 @@ main = do
   args <- getArgs
 
   let words = splitOn "\n" wordsFile
-  let anagrams = concat $ sentenceAnagrams args words
+  let anagrams = sentenceAnagrams args words
 
   print anagrams
