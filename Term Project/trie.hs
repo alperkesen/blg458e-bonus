@@ -20,6 +20,9 @@ import Prelude hiding (Word)
 data Trie = Trie {end :: Bool, children :: M.Map Char Trie} 
     deriving (Eq, Show)
 
+data Action = Add | Search | Find | Print | Undefined
+    deriving (Eq, Show)
+
 type Word = String
 
 
