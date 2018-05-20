@@ -30,12 +30,16 @@ empty = Trie {end = False, children = M.empty}
 insert :: Word -> Trie -> Trie
 insert [] t = t
 insert [w'] t = Trie {end = end t, children = newChildren}
-    where
-      subtree = (fromMaybe empty . M.lookup w') $ children t
-      endNode = Trie {end = True, children = children subtree}
-      newChildren = M.insert w' endNode $ children t
+  where
+    subtree = (fromMaybe empty . M.lookup w') $ children t
+    endNode = Trie {end = True, children = children subtree}
+    newChildren = M.insert w' endNode $ children t
 insert ws@(w':ws') t = Trie {end = end t, children = newChildren}
-    where
-      subtree = (fromMaybe empty . M.lookup w') $ children t
-      nextNode = insert ws' subtree
-      newChildren = M.insert w' nextNode $ children t
+  where
+    subtree = (fromMaybe empty . M.lookup w') $ children t
+    nextNode = insert ws' subtree
+    newChildren = M.insert w' nextNode $ children t
+
+
+insertList :: [Word] -> Trie
+insertList = foldl (\x y -> insert y x) empty
