@@ -159,3 +159,14 @@ getInput t = do
 
                 newT <- doAction t action prefix
                 getInput newT
+
+
+main :: IO ()
+main = do
+    args <- getArgs
+    wordsFile <- readFile $ head args
+
+    let words = lines wordsFile
+    let trie = insertList words
+
+    getInput trie
