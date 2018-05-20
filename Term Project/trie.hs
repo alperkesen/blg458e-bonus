@@ -113,13 +113,14 @@ doAction trie action word = case action of
         return trie
 
   Find -> do
-    putStrLn "Found words:"
     let words = prefix word trie
 
     case words of
       Nothing -> do
+        putStrLn "No words found with that prefix!\n"
         return trie
       Just x -> do
+        putStrLn "Found words:"
         putStrLn (unlines x)
         return trie
 
