@@ -132,3 +132,30 @@ doAction trie action word = case action of
   Undefined -> do
     putStrLn "Undefined action!\n"
     return trie
+
+
+getInput :: Trie -> IO ()
+getInput t = do
+    putStrLn "a) Add Word"
+    putStrLn "s) Search Word"
+    putStrLn "f) Find words with prefix"
+    putStrLn "p) Print all words"
+    putStrLn "e) Exit"
+    putStrLn "Enter the action:"
+    inp <- getLine
+
+    if inp == "e"
+        then return ()
+        else do
+          let action = convertAction inp
+
+          if action == Print || action == Undefined
+            then do
+                newT <- doAction t action ""
+                getInput newT
+            else do
+                putStrLn "Enter word/prefix:"
+                prefix <- getLine
+
+                newT <- doAction t action prefix
+                getInput newT
