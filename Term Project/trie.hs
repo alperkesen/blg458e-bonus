@@ -91,3 +91,44 @@ convertAction s = case s of
   "f" -> Find
   "p" -> Print
   _   -> Undefined
+
+
+doAction :: Trie -> Action -> Word -> IO Trie
+doAction trie action word = case action of
+  Add -> do
+    let newTrie = insert word trie
+    putStrLn "New word is added!\n"
+
+    return newTrie
+
+  Search -> do
+    let doesExist = search word trie
+
+    if doesExist == True
+      then do
+        putStrLn "Exists in dictionary!\n"
+        return trie
+      else do
+        putStrLn "NOT exist!\n"
+        return trie
+
+  Find -> do
+    putStrLn "Found words:"
+    let words = prefix word trie
+
+    case words of
+      Nothing -> do
+        return trie
+      Just x -> do
+        putStrLn (unlines x)
+        return trie
+
+  Print -> do
+    putStrLn "List of words in dictionary:"
+    let words = (unlines . getWords) trie
+    putStrLn words
+    return trie
+
+  Undefined -> do
+    putStrLn "Undefined action!\n"
+    return trie
