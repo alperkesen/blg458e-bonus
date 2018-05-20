@@ -19,3 +19,8 @@ import Prelude hiding (Word)
 
 data Trie = Trie {end :: Bool, children :: M.Map Char Trie} 
     deriving (Eq, Show)
+
+type Word = String
+
+empty :: Trie
+empty = Trie {end = False, children = M.empty}
