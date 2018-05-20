@@ -66,3 +66,16 @@ getWords t = getWords' t []
       where
         lst = M.toList $ children t
         nextWords = concat [getWords' (snd x) (acc ++ [fst x]) | x <- lst]
+
+
+prefix :: Word -> Trie -> Maybe [Word]
+prefix [] trie = Just $ getWords trie
+prefix word trie = prefix' word trie
+  where
+    prefix' :: Word -> Trie -> Maybe [Word]
+    prefix' [] t = Just (map (word++) $ getWords t)
+    prefix' w@(w':ws') t
+      | subtree == empty  = Nothing
+      | otherwise         = prefix' ws' subtree
+      where
+        subtree = (fromMaybe empty . M.lookup w') $ children t
