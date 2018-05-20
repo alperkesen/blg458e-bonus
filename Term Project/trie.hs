@@ -82,3 +82,12 @@ prefix word trie = prefix' word trie
       | otherwise         = prefix' ws' subtree
       where
         subtree = (fromMaybe empty . M.lookup w') $ children t
+
+
+convertAction :: String -> Action
+convertAction s = case s of
+  "a" -> Add
+  "s" -> Search
+  "f" -> Find
+  "p" -> Print
+  _   -> Undefined
