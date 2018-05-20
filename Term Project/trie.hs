@@ -53,3 +53,16 @@ search w@(w':ws') t
   | otherwise                = search ws' subtree
   where
     subtree = (fromMaybe empty . M.lookup w') $ children t
+
+
+getWords :: Trie -> [Word]
+getWords t = getWords' t []
+  where
+    getWords' :: Trie -> [Char] -> [Word]
+    getWords' t acc
+      | children t == M.empty = [acc]
+      | end t                 = [acc] ++ nextWords
+      | otherwise             = nextWords
+      where
+        lst = M.toList $ children t
+        nextWords = concat [getWords' (snd x) (acc ++ [fst x]) | x <- lst]
