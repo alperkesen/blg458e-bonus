@@ -43,3 +43,13 @@ insert ws@(w':ws') t = Trie {end = end t, children = newChildren}
 
 insertList :: [Word] -> Trie
 insertList = foldl (\x y -> insert y x) empty
+
+
+search :: Word -> Trie -> Bool
+search [] _ = False
+search w@(w':ws') t
+  | subtree == empty         = False
+  | end subtree && null ws'  = True
+  | otherwise                = search ws' subtree
+  where
+    subtree = (fromMaybe empty . M.lookup w') $ children t
